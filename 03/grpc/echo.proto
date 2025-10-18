@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package echo;
+option go_package = "chitchat/grpc;echo";
+
+service Echo {
+  rpc Join (JoinRequest) returns (JoinReply) {}
+  rpc Publish (PublishRequest) returns (PublishReply) {}
+  rpc Subscribe (SubscribeRequest) returns (stream Event) {}
+  rpc Leave (LeaveRequest) returns (LeaveReply) {}
+}
+
+message JoinRequest {
+  uint64 clock = 1;
+}
+
+message JoinReply {
+  uint64 client_id = 1;
+  uint64 server_clock = 2;
+}
+
+message PublishRequest {
+  uint64 client_id = 1;
+  string text = 2;
+  uint64 clock = 3;
+}
+
+message PublishReply {
+  uint64 server_clock = 1;
+}
+
+message SubscribeRequest {
+  uint64 client_id = 1;
+  uint64 clock = 2;
+}
+
+message LeaveRequest {
+  uint64 client_id = 1;
+  uint64 clock = 2;
+}
+
+message LeaveReply {
+  uint64 server_clock = 1;
+}
+
+enum EventType {
+  EVENT_JOIN = 0;
+  EVENT_USER_MSG = 1;
+  EVENT_LEAVE = 2;
+}
+
+message Event {
+  EventType type = 1;
+  uint64 client_id = 2;
+  string text = 3;
+  uint64 lamport = 4;
+}
