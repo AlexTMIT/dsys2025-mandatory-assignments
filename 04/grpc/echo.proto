@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package echo;
+option go_package = "ra/grpc;echo";
+
+service Echo {
+  rpc Msg (Request) returns (Reply) {}
+}
+
+message Request {
+  uint64 id = 1;
+  uint64 timestamp = 2;
+}
+
+message Reply {
+  uint64 id = 1;
+  uint64 timestamp = 2;
+}
