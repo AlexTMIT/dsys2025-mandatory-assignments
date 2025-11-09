@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.32.0
-// source: ra.proto
+// source: grpc/ra.proto
 
 package ra
 
@@ -194,5 +194,5 @@ var RA_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "ra.proto",
+	Metadata: "grpc/ra.proto",
 }

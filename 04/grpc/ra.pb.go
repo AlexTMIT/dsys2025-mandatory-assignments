@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v6.32.0
-// source: ra.proto
+// source: grpc/ra.proto
 
 package ra
 
@@ -32,7 +32,7 @@ type Req struct {
 
 func (x *Req) Reset() {
 	*x = Req{}
-	mi := &file_ra_proto_msgTypes[0]
+	mi := &file_grpc_ra_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +44,7 @@ func (x *Req) String() string {
 func (*Req) ProtoMessage() {}
 
 func (x *Req) ProtoReflect() protoreflect.Message {
-	mi := &file_ra_proto_msgTypes[0]
+	mi := &file_grpc_ra_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +57,7 @@ func (x *Req) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Req.ProtoReflect.Descriptor instead.
 func (*Req) Descriptor() ([]byte, []int) {
-	return file_ra_proto_rawDescGZIP(), []int{0}
+	return file_grpc_ra_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Req) GetFrom() uint64 {
@@ -84,7 +84,7 @@ type Rep struct {
 
 func (x *Rep) Reset() {
 	*x = Rep{}
-	mi := &file_ra_proto_msgTypes[1]
+	mi := &file_grpc_ra_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -96,7 +96,7 @@ func (x *Rep) String() string {
 func (*Rep) ProtoMessage() {}
 
 func (x *Rep) ProtoReflect() protoreflect.Message {
-	mi := &file_ra_proto_msgTypes[1]
+	mi := &file_grpc_ra_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -109,7 +109,7 @@ func (x *Rep) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Rep.ProtoReflect.Descriptor instead.
 func (*Rep) Descriptor() ([]byte, []int) {
-	return file_ra_proto_rawDescGZIP(), []int{1}
+	return file_grpc_ra_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Rep) GetFrom() uint64 {
@@ -136,7 +136,7 @@ type Rel struct {
 
 func (x *Rel) Reset() {
 	*x = Rel{}
-	mi := &file_ra_proto_msgTypes[2]
+	mi := &file_grpc_ra_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -148,7 +148,7 @@ func (x *Rel) String() string {
 func (*Rel) ProtoMessage() {}
 
 func (x *Rel) ProtoReflect() protoreflect.Message {
-	mi := &file_ra_proto_msgTypes[2]
+	mi := &file_grpc_ra_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -161,7 +161,7 @@ func (x *Rel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Rel.ProtoReflect.Descriptor instead.
 func (*Rel) Descriptor() ([]byte, []int) {
-	return file_ra_proto_rawDescGZIP(), []int{2}
+	return file_grpc_ra_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Rel) GetFrom() uint64 {
@@ -178,11 +178,11 @@ func (x *Rel) GetTs() uint64 {
 	return 0
 }
 
-var File_ra_proto protoreflect.FileDescriptor
+var File_grpc_ra_proto protoreflect.FileDescriptor
 
-const file_ra_proto_rawDesc = "" +
+const file_grpc_ra_proto_rawDesc = "" +
 	"\n" +
-	"\bra.proto\x12\x02ra\x1a\x1bgoogle/protobuf/empty.proto\")\n" +
+	"\rgrpc/ra.proto\x12\x02ra\x1a\x1bgoogle/protobuf/empty.proto\")\n" +
 	"\x03Req\x12\x12\n" +
 	"\x04from\x18\x01 \x01(\x04R\x04from\x12\x0e\n" +
 	"\x02ts\x18\x02 \x01(\x04R\x02ts\")\n" +
@@ -199,25 +199,25 @@ const file_ra_proto_rawDesc = "" +
 	"ra/grpc;rab\x06proto3"
 
 var (
-	file_ra_proto_rawDescOnce sync.Once
-	file_ra_proto_rawDescData []byte
+	file_grpc_ra_proto_rawDescOnce sync.Once
+	file_grpc_ra_proto_rawDescData []byte
 )
 
-func file_ra_proto_rawDescGZIP() []byte {
-	file_ra_proto_rawDescOnce.Do(func() {
-		file_ra_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_ra_proto_rawDesc), len(file_ra_proto_rawDesc)))
+func file_grpc_ra_proto_rawDescGZIP() []byte {
+	file_grpc_ra_proto_rawDescOnce.Do(func() {
+		file_grpc_ra_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_grpc_ra_proto_rawDesc), len(file_grpc_ra_proto_rawDesc)))
 	})
-	return file_ra_proto_rawDescData
+	return file_grpc_ra_proto_rawDescData
 }
 
-var file_ra_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_ra_proto_goTypes = []any{
+var file_grpc_ra_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_grpc_ra_proto_goTypes = []any{
 	(*Req)(nil),           // 0: ra.Req
 	(*Rep)(nil),           // 1: ra.Rep
 	(*Rel)(nil),           // 2: ra.Rel
 	(*emptypb.Empty)(nil), // 3: google.protobuf.Empty
 }
-var file_ra_proto_depIdxs = []int32{
+var file_grpc_ra_proto_depIdxs = []int32{
 	0, // 0: ra.RA.Request:input_type -> ra.Req
 	1, // 1: ra.RA.Reply:input_type -> ra.Rep
 	2, // 2: ra.RA.Release:input_type -> ra.Rel
@@ -231,26 +231,26 @@ var file_ra_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_ra_proto_init() }
-func file_ra_proto_init() {
-	if File_ra_proto != nil {
+func init() { file_grpc_ra_proto_init() }
+func file_grpc_ra_proto_init() {
+	if File_grpc_ra_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_ra_proto_rawDesc), len(file_ra_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_grpc_ra_proto_rawDesc), len(file_grpc_ra_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_ra_proto_goTypes,
-		DependencyIndexes: file_ra_proto_depIdxs,
-		MessageInfos:      file_ra_proto_msgTypes,
+		GoTypes:           file_grpc_ra_proto_goTypes,
+		DependencyIndexes: file_grpc_ra_proto_depIdxs,
+		MessageInfos:      file_grpc_ra_proto_msgTypes,
 	}.Build()
-	File_ra_proto = out.File
-	file_ra_proto_goTypes = nil
-	file_ra_proto_depIdxs = nil
+	File_grpc_ra_proto = out.File
+	file_grpc_ra_proto_goTypes = nil
+	file_grpc_ra_proto_depIdxs = nil
 }
