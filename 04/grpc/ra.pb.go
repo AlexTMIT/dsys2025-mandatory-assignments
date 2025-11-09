@@ -126,58 +126,6 @@ func (x *Rep) GetTs() uint64 {
 	return 0
 }
 
-type Rel struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	From          uint64                 `protobuf:"varint,1,opt,name=from,proto3" json:"from,omitempty"`
-	Ts            uint64                 `protobuf:"varint,2,opt,name=ts,proto3" json:"ts,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Rel) Reset() {
-	*x = Rel{}
-	mi := &file_grpc_ra_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Rel) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Rel) ProtoMessage() {}
-
-func (x *Rel) ProtoReflect() protoreflect.Message {
-	mi := &file_grpc_ra_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Rel.ProtoReflect.Descriptor instead.
-func (*Rel) Descriptor() ([]byte, []int) {
-	return file_grpc_ra_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *Rel) GetFrom() uint64 {
-	if x != nil {
-		return x.From
-	}
-	return 0
-}
-
-func (x *Rel) GetTs() uint64 {
-	if x != nil {
-		return x.Ts
-	}
-	return 0
-}
-
 var File_grpc_ra_proto protoreflect.FileDescriptor
 
 const file_grpc_ra_proto_rawDesc = "" +
@@ -188,14 +136,10 @@ const file_grpc_ra_proto_rawDesc = "" +
 	"\x02ts\x18\x02 \x01(\x04R\x02ts\")\n" +
 	"\x03Rep\x12\x12\n" +
 	"\x04from\x18\x01 \x01(\x04R\x04from\x12\x0e\n" +
-	"\x02ts\x18\x02 \x01(\x04R\x02ts\")\n" +
-	"\x03Rel\x12\x12\n" +
-	"\x04from\x18\x01 \x01(\x04R\x04from\x12\x0e\n" +
-	"\x02ts\x18\x02 \x01(\x04R\x02ts2\x8c\x01\n" +
+	"\x02ts\x18\x02 \x01(\x04R\x02ts2^\n" +
 	"\x02RA\x12,\n" +
 	"\aRequest\x12\a.ra.Req\x1a\x16.google.protobuf.Empty\"\x00\x12*\n" +
-	"\x05Reply\x12\a.ra.Rep\x1a\x16.google.protobuf.Empty\"\x00\x12,\n" +
-	"\aRelease\x12\a.ra.Rel\x1a\x16.google.protobuf.Empty\"\x00B\fZ\n" +
+	"\x05Reply\x12\a.ra.Rep\x1a\x16.google.protobuf.Empty\"\x00B\fZ\n" +
 	"ra/grpc;rab\x06proto3"
 
 var (
@@ -210,22 +154,19 @@ func file_grpc_ra_proto_rawDescGZIP() []byte {
 	return file_grpc_ra_proto_rawDescData
 }
 
-var file_grpc_ra_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_grpc_ra_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_grpc_ra_proto_goTypes = []any{
 	(*Req)(nil),           // 0: ra.Req
 	(*Rep)(nil),           // 1: ra.Rep
-	(*Rel)(nil),           // 2: ra.Rel
-	(*emptypb.Empty)(nil), // 3: google.protobuf.Empty
+	(*emptypb.Empty)(nil), // 2: google.protobuf.Empty
 }
 var file_grpc_ra_proto_depIdxs = []int32{
 	0, // 0: ra.RA.Request:input_type -> ra.Req
 	1, // 1: ra.RA.Reply:input_type -> ra.Rep
-	2, // 2: ra.RA.Release:input_type -> ra.Rel
-	3, // 3: ra.RA.Request:output_type -> google.protobuf.Empty
-	3, // 4: ra.RA.Reply:output_type -> google.protobuf.Empty
-	3, // 5: ra.RA.Release:output_type -> google.protobuf.Empty
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	2, // 2: ra.RA.Request:output_type -> google.protobuf.Empty
+	2, // 3: ra.RA.Reply:output_type -> google.protobuf.Empty
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -242,7 +183,7 @@ func file_grpc_ra_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_grpc_ra_proto_rawDesc), len(file_grpc_ra_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

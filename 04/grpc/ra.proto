@@ -8,20 +8,13 @@ import "google/protobuf/empty.proto";
 service RA {
   rpc Request (Req) returns (google.protobuf.Empty) {}
   rpc Reply   (Rep) returns (google.protobuf.Empty) {}
-  rpc Release (Rel) returns (google.protobuf.Empty) {}
 }
 
-message Req { 
-  uint64 from = 1; 
-  uint64 ts = 2; 
+message Req {
+  uint64 ts   = 1;
+  string addr = 2;
 }
 
-message Rep { 
-  uint64 from = 1; 
-  uint64 ts = 2; 
-}
-
-message Rel { 
-  uint64 from = 1; 
-  uint64 ts = 2; 
+message Rep {
+  uint64 ts   = 1;
 }
