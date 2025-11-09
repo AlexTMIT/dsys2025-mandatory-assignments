@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	RA_Request_FullMethodName = "/ra.RA/Request"
 	RA_Reply_FullMethodName   = "/ra.RA/Reply"
+	RA_Ping_FullMethodName    = "/ra.RA/Ping"
 )
 
 // RAClient is the client API for RA service.
@@ -30,6 +31,7 @@ const (
 type RAClient interface {
 	Request(ctx context.Context, in *Req, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Reply(ctx context.Context, in *Rep, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type rAClient struct {
@@ -60,12 +62,23 @@ func (c *rAClient) Reply(ctx context.Context, in *Rep, opts ...grpc.CallOption) 
 	return out, nil
 }
 
+func (c *rAClient) Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, RA_Ping_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RAServer is the server API for RA service.
 // All implementations must embed UnimplementedRAServer
 // for forward compatibility.
 type RAServer interface {
 	Request(context.Context, *Req) (*emptypb.Empty, error)
 	Reply(context.Context, *Rep) (*emptypb.Empty, error)
+	Ping(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	mustEmbedUnimplementedRAServer()
 }
 
@@ -81,6 +94,9 @@ func (UnimplementedRAServer) Request(context.Context, *Req) (*emptypb.Empty, err
 }
 func (UnimplementedRAServer) Reply(context.Context, *Rep) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Reply not implemented")
+}
+func (UnimplementedRAServer) Ping(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
 func (UnimplementedRAServer) mustEmbedUnimplementedRAServer() {}
 func (UnimplementedRAServer) testEmbeddedByValue()            {}
@@ -139,6 +155,24 @@ func _RA_Reply_Handler(srv interface{}, ctx context.Context, dec func(interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RA_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RAServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RA_Ping_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RAServer).Ping(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RA_ServiceDesc is the grpc.ServiceDesc for RA service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -153,6 +187,10 @@ var RA_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Reply",
 			Handler:    _RA_Reply_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _RA_Ping_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -127,10 +127,11 @@ const file_grpc_ra_proto_rawDesc = "" +
 	"\x02ts\x18\x01 \x01(\x04R\x02ts\x12\x12\n" +
 	"\x04addr\x18\x02 \x01(\tR\x04addr\"\x15\n" +
 	"\x03Rep\x12\x0e\n" +
-	"\x02ts\x18\x01 \x01(\x04R\x02ts2^\n" +
+	"\x02ts\x18\x01 \x01(\x04R\x02ts2\x98\x01\n" +
 	"\x02RA\x12,\n" +
 	"\aRequest\x12\a.ra.Req\x1a\x16.google.protobuf.Empty\"\x00\x12*\n" +
-	"\x05Reply\x12\a.ra.Rep\x1a\x16.google.protobuf.Empty\"\x00B\fZ\n" +
+	"\x05Reply\x12\a.ra.Rep\x1a\x16.google.protobuf.Empty\"\x00\x128\n" +
+	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\x16.google.protobuf.Empty\"\x00B\fZ\n" +
 	"ra/grpc;rab\x06proto3"
 
 var (
@@ -154,10 +155,12 @@ var file_grpc_ra_proto_goTypes = []any{
 var file_grpc_ra_proto_depIdxs = []int32{
 	0, // 0: ra.RA.Request:input_type -> ra.Req
 	1, // 1: ra.RA.Reply:input_type -> ra.Rep
-	2, // 2: ra.RA.Request:output_type -> google.protobuf.Empty
-	2, // 3: ra.RA.Reply:output_type -> google.protobuf.Empty
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	2, // 2: ra.RA.Ping:input_type -> google.protobuf.Empty
+	2, // 3: ra.RA.Request:output_type -> google.protobuf.Empty
+	2, // 4: ra.RA.Reply:output_type -> google.protobuf.Empty
+	2, // 5: ra.RA.Ping:output_type -> google.protobuf.Empty
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

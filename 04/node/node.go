@@ -12,6 +12,7 @@ import (
 	pb "ra/grpc"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/connectivity"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -37,9 +38,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for a := range n.peers {
-		go n.dialPeer(a)
-	}
+	n.waitPeersReady()
 
 	go func() {
 		for {
@@ -98,16 +97,55 @@ func (n *Node) dialPeer(addr string) {
 	for {
 		conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			log.Printf("[%s] dial %s failed: %v (retry)", n.addr, addr, err)
 			time.Sleep(600 * time.Millisecond)
 			continue
 		}
 		client := pb.NewRAClient(conn)
+
+		pingCtx, pingCancel := context.WithTimeout(context.Background(), 1*time.Second)
+		_, perr := client.Ping(pingCtx, &emptypb.Empty{})
+		pingCancel()
+		if perr != nil || conn.GetState() != connectivity.Ready {
+			_ = conn.Close()
+			time.Sleep(400 * time.Millisecond)
+			continue
+		}
+
 		n.mu.Lock()
 		n.peers[addr] = client
 		n.mu.Unlock()
 		log.Printf("[%s] connected -> %s", n.addr, addr)
 		return
+	}
+}
+
+func (n *Node) waitPeersReady() {
+	for {
+		n.mu.Lock()
+		total := len(n.peers)
+		ok := 0
+		// heartbeat sweep
+		for addr, c := range n.peers {
+			if c == nil {
+				continue
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+			_, err := c.Ping(ctx, &emptypb.Empty{})
+			cancel()
+			if err == nil {
+				ok++
+			} else {
+				n.peers[addr] = nil
+				go n.dialPeer(addr)
+			}
+		}
+		n.mu.Unlock()
+		if ok == total {
+			log.Printf("[%s] all peers reachable (%d/%d); starting", n.addr, ok, total)
+			return
+		}
+		log.Printf("[%s] waiting for peers: %d/%d reachable", n.addr, ok, total)
+		time.Sleep(time.Second * 5)
 	}
 }
 
@@ -123,13 +161,13 @@ func (n *Node) Request(ctx context.Context, r *pb.Req) (*emptypb.Empty, error) {
 	meHasPriority := n.requesting && (n.reqTs < r.Ts || (n.reqTs == r.Ts && n.addr < r.Addr))
 	if meHasPriority {
 		n.deferred[r.Addr] = true
-		log.Printf("[%s] recv Request from %s → DEFER (my reqTs=%d < their ts=%d) | ts %d→%d", n.addr, r.Addr, n.reqTs, r.Ts, oldTs, n.ts)
+		log.Printf("[%s] recv Request from %s -> DEFER (my reqTs=%d < their ts=%d) | ts %d->%d", n.addr, r.Addr, n.reqTs, r.Ts, oldTs, n.ts)
 		n.mu.Unlock()
 		return &emptypb.Empty{}, nil
 	}
 
 	to := r.Addr
-	log.Printf("[%s] recv Request from %s → REPLY immediately (my reqTs=%d, their ts=%d) | ts %d→%d", n.addr, to, n.reqTs, r.Ts, oldTs, n.ts)
+	log.Printf("[%s] recv Request from %s -> REPLY immediately (my reqTs=%d, their ts=%d) | ts %d->%d", n.addr, to, n.reqTs, r.Ts, oldTs, n.ts)
 	n.mu.Unlock()
 	go n.replyTo(to)
 	return &emptypb.Empty{}, nil
@@ -145,9 +183,13 @@ func (n *Node) Reply(ctx context.Context, r *pb.Rep) (*emptypb.Empty, error) {
 	}
 	if n.requesting {
 		n.replies++
-		log.Printf("[%s] recv Reply #%d/%d | ts %d→%d", n.addr, n.replies, len(n.peers), oldTs, n.ts)
+		log.Printf("[%s] recv Reply #%d/%d | ts %d->%d", n.addr, n.replies, len(n.peers), oldTs, n.ts)
 	}
 	n.mu.Unlock()
+	return &emptypb.Empty{}, nil
+}
+
+func (n *Node) Ping(ctx context.Context, _ *emptypb.Empty) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil
 }
 
@@ -222,8 +264,8 @@ func (n *Node) replyTo(addr string) {
 	_, err := c.Reply(ctx, &pb.Rep{Ts: curTs})
 	cancel()
 	if err != nil {
-		log.Printf("[%s] send Reply → %s FAILED: %v", n.addr, addr, err)
+		log.Printf("[%s] send Reply -> %s FAILED: %v", n.addr, addr, err)
 	} else {
-		log.Printf("[%s] send Reply → %s (ts %d→%d)", n.addr, addr, oldTs, curTs)
+		log.Printf("[%s] send Reply -> %s (ts %d->%d)", n.addr, addr, oldTs, curTs)
 	}
 }
