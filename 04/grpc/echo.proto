@@ -1,18 +1,25 @@
 syntax = "proto3";
 
-package echo;
-option go_package = "ra/grpc;echo";
+package ra;
+option go_package = "ra/grpc;ra";
 
-service Echo {
-  rpc Msg (Request) returns (Reply) {}
+service RA {
+  rpc Request (Req) returns (.google.protobuf.Empty) {}
+  rpc Reply   (Rep) returns (.google.protobuf.Empty) {}
+  rpc Release (Rel) returns (.google.protobuf.Empty) {}
 }
 
-message Request {
-  uint64 id = 1;
-  uint64 timestamp = 2;
+message Req { 
+  uint64 from = 1; 
+  uint64 ts = 2; 
 }
 
-message Reply {
-  uint64 id = 1;
-  uint64 timestamp = 2;
+message Rep { 
+  uint64 from = 1; 
+  uint64 ts = 2; 
+}
+
+message Rel { 
+  uint64 from = 1; 
+  uint64 ts = 2; 
 }
