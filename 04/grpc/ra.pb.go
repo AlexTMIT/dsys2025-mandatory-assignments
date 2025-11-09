@@ -24,8 +24,8 @@ const (
 
 type Req struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	From          uint64                 `protobuf:"varint,1,opt,name=from,proto3" json:"from,omitempty"`
-	Ts            uint64                 `protobuf:"varint,2,opt,name=ts,proto3" json:"ts,omitempty"`
+	Ts            uint64                 `protobuf:"varint,1,opt,name=ts,proto3" json:"ts,omitempty"`
+	Addr          string                 `protobuf:"bytes,2,opt,name=addr,proto3" json:"addr,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -60,13 +60,6 @@ func (*Req) Descriptor() ([]byte, []int) {
 	return file_grpc_ra_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Req) GetFrom() uint64 {
-	if x != nil {
-		return x.From
-	}
-	return 0
-}
-
 func (x *Req) GetTs() uint64 {
 	if x != nil {
 		return x.Ts
@@ -74,10 +67,16 @@ func (x *Req) GetTs() uint64 {
 	return 0
 }
 
+func (x *Req) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
 type Rep struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	From          uint64                 `protobuf:"varint,1,opt,name=from,proto3" json:"from,omitempty"`
-	Ts            uint64                 `protobuf:"varint,2,opt,name=ts,proto3" json:"ts,omitempty"`
+	Ts            uint64                 `protobuf:"varint,1,opt,name=ts,proto3" json:"ts,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -112,13 +111,6 @@ func (*Rep) Descriptor() ([]byte, []int) {
 	return file_grpc_ra_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Rep) GetFrom() uint64 {
-	if x != nil {
-		return x.From
-	}
-	return 0
-}
-
 func (x *Rep) GetTs() uint64 {
 	if x != nil {
 		return x.Ts
@@ -131,12 +123,11 @@ var File_grpc_ra_proto protoreflect.FileDescriptor
 const file_grpc_ra_proto_rawDesc = "" +
 	"\n" +
 	"\rgrpc/ra.proto\x12\x02ra\x1a\x1bgoogle/protobuf/empty.proto\")\n" +
-	"\x03Req\x12\x12\n" +
-	"\x04from\x18\x01 \x01(\x04R\x04from\x12\x0e\n" +
-	"\x02ts\x18\x02 \x01(\x04R\x02ts\")\n" +
-	"\x03Rep\x12\x12\n" +
-	"\x04from\x18\x01 \x01(\x04R\x04from\x12\x0e\n" +
-	"\x02ts\x18\x02 \x01(\x04R\x02ts2^\n" +
+	"\x03Req\x12\x0e\n" +
+	"\x02ts\x18\x01 \x01(\x04R\x02ts\x12\x12\n" +
+	"\x04addr\x18\x02 \x01(\tR\x04addr\"\x15\n" +
+	"\x03Rep\x12\x0e\n" +
+	"\x02ts\x18\x01 \x01(\x04R\x02ts2^\n" +
 	"\x02RA\x12,\n" +
 	"\aRequest\x12\a.ra.Req\x1a\x16.google.protobuf.Empty\"\x00\x12*\n" +
 	"\x05Reply\x12\a.ra.Rep\x1a\x16.google.protobuf.Empty\"\x00B\fZ\n" +
