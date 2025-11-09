@@ -3,10 +3,12 @@ syntax = "proto3";
 package ra;
 option go_package = "ra/grpc;ra";
 
+import "google/protobuf/empty.proto";
+
 service RA {
-  rpc Request (Req) returns (.google.protobuf.Empty) {}
-  rpc Reply   (Rep) returns (.google.protobuf.Empty) {}
-  rpc Release (Rel) returns (.google.protobuf.Empty) {}
+  rpc Request (Req) returns (google.protobuf.Empty) {}
+  rpc Reply   (Rep) returns (google.protobuf.Empty) {}
+  rpc Release (Rel) returns (google.protobuf.Empty) {}
 }
 
 message Req { 
