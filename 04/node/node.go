@@ -36,6 +36,7 @@ func main() {
 	if err := n.startServer(); err != nil {
 		log.Fatal(err)
 	}
+
 	for a := range n.peers {
 		go n.dialPeer(a)
 	}
@@ -119,7 +120,7 @@ func (n *Node) Request(ctx context.Context, r *pb.Req) (*emptypb.Empty, error) {
 		n.ts++
 	}
 
-	meHasPriority := n.requesting && n.reqTs < r.Ts
+	meHasPriority := n.requesting && (n.reqTs < r.Ts || (n.reqTs == r.Ts && n.addr < r.Addr))
 	if meHasPriority {
 		n.deferred[r.Addr] = true
 		log.Printf("[%s] recv Request from %s → DEFER (my reqTs=%d < their ts=%d) | ts %d→%d", n.addr, r.Addr, n.reqTs, r.Ts, oldTs, n.ts)
