@@ -38,6 +38,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	for a := range n.peers {
+		go n.dialPeer(a)
+	}
+
 	n.waitPeersReady()
 
 	go func() {
