@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"sort"
 	"strings"
 	"sync"
+	"time"
 )
 
 type Node struct {
@@ -22,9 +22,16 @@ type Node struct {
 func main() {
 	n := readArgs()
 
-	fmt.Println("Node init:")
-	fmt.Println(n)
+	fmt.Println("\n--- node init ---")
+	fmt.Printf("%s\n\n", n)
 
+	for i := range n.peers {
+		go listen(n.peers[i])
+	}
+
+	for {
+		time.Sleep(1000)
+	}
 }
 
 func readArgs() *Node {
@@ -50,27 +57,25 @@ func (n *Node) String() string {
 	n.mu.Lock()
 	defer n.mu.Unlock()
 
-	peers := strings.Join(n.peers, ", ")
-
-	deferredIDs := make([]int, 0, len(n.deferred))
-	for id := range n.deferred {
-		deferredIDs = append(deferredIDs, id)
-	}
-	sort.Ints(deferredIDs)
-
-	deferredStrs := make([]string, len(deferredIDs))
-	for i, id := range deferredIDs {
-		deferredStrs[i] = fmt.Sprintf("%d", id)
-	}
-	deferred := strings.Join(deferredStrs, ", ")
-
 	status := "idle"
 	if n.requesting {
 		status = fmt.Sprintf("requesting@%d", n.reqTimestamp)
 	}
 
+	peers := "[" + strings.Join(n.peers, ", ") + "]"
+
+	ids := make([]string, 0, len(n.deferred))
+	for id := range n.deferred {
+		ids = append(ids, fmt.Sprint(id))
+	}
+	deferred := "[" + strings.Join(ids, ", ") + "]"
+
 	return fmt.Sprintf(
-		"Node{id:%d, addr:%s, lamport:%d, status:%s, peers:[%s], deferred:[%s]}",
+		"Node{id:%d, addr:%s, lamport:%d, status:%s, peers:%s, deferred:%s}",
 		n.id, n.addr, n.timestamp, status, peers, deferred,
 	)
+}
+
+func listen(peer string) {
+	fmt.Println("going with peer " + peer)
 }
