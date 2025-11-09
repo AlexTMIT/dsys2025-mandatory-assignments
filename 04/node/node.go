@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"sort"
 	"strings"
 	"sync"
 )
@@ -19,15 +20,21 @@ type Node struct {
 }
 
 func main() {
+	n := readArgs()
 
+	fmt.Println("Node init:")
+	fmt.Println(n)
+
+}
+
+func readArgs() *Node {
 	id := flag.Int("id", 0, "node id")
 	port := flag.String("port", ":5000", "listen port")
 	p := flag.String("peers", "", "comma-separated peer addresses")
-
 	flag.Parse()
 	peers := strings.Split(*p, ",")
 
-	n := &Node{
+	return &Node{
 		id:           *id,
 		addr:         *port,
 		peers:        peers,
@@ -37,6 +44,33 @@ func main() {
 		deferred:     make(map[int]bool),
 		mu:           sync.Mutex{},
 	}
+}
 
-	fmt.Printf("node init: \n%+v\n", n)
+func (n *Node) String() string {
+	n.mu.Lock()
+	defer n.mu.Unlock()
+
+	peers := strings.Join(n.peers, ", ")
+
+	deferredIDs := make([]int, 0, len(n.deferred))
+	for id := range n.deferred {
+		deferredIDs = append(deferredIDs, id)
+	}
+	sort.Ints(deferredIDs)
+
+	deferredStrs := make([]string, len(deferredIDs))
+	for i, id := range deferredIDs {
+		deferredStrs[i] = fmt.Sprintf("%d", id)
+	}
+	deferred := strings.Join(deferredStrs, ", ")
+
+	status := "idle"
+	if n.requesting {
+		status = fmt.Sprintf("requesting@%d", n.reqTimestamp)
+	}
+
+	return fmt.Sprintf(
+		"Node{id:%d, addr:%s, lamport:%d, status:%s, peers:[%s], deferred:[%s]}",
+		n.id, n.addr, n.timestamp, status, peers, deferred,
+	)
 }
