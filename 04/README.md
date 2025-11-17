@@ -239,4 +239,5 @@ go run ./node --port=:50054 --peers=:50051,:50052,:50053
 2025/11/09 20:59:50 [localhost:50054] recv Reply #1/3 | ts 22->26
 2025/11/09 20:59:50 [localhost:50054] recv Reply #2/3 | ts 26->27
 ^Csignal: interrupt
-(base) atm@MacBookPro node % ```
+(base) atm@MacBookPro node % 
+```
