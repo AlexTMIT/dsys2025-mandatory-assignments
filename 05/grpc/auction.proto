@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package auction;
+option go_package = "auction/grpc;auction";
+
+service Auction {
+  rpc Bid(BidRequest) returns (BidResponse);
+  rpc Result(ResultRequest) returns (ResultResponse);
+  rpc Replicate(ReplicaMsg) returns (Ack);
+}
+
+message BidRequest {
+  string bidder = 1;
+  int32 amount = 2;
+}
+
+message BidResponse {
+  string outcome = 1;
+}
+
+message ResultRequest {}
+
+message ResultResponse {
+  bool ended = 1;
+  int32 highest = 2;
+  string highestBidder = 3;
+}
+
+message ReplicaMsg {
+  int32 highest = 1;
+  string highestBidder = 2;
+}
+
+message Ack {}
